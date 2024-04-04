@@ -1,15 +1,17 @@
-import torch
 from abc import ABC
 from typing import Any
+
+import torch
 from transformers import (
-    AutoModelForCausalLM,
     AutoConfig,
-    PretrainedConfig,
+    AutoModelForCausalLM,
     AutoTokenizer,
-    pipeline,
     BitsAndBytesConfig,
+    PretrainedConfig,
     StoppingCriteriaList,
+    pipeline,
 )
+
 from tune.utils import StopOnWords
 
 
@@ -33,7 +35,6 @@ class CausalLMModel(BaseModel):
     def __init__(
         self,
         model_name: str,
-        conf: PretrainedConfig | None = None,
         q_conf: BitsAndBytesConfig | None = None,
         stop_words: list[str] | None = None,
         hf_token: str | None = None,
@@ -41,17 +42,13 @@ class CausalLMModel(BaseModel):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.stop_words = stop_words
         self.model_name = model_name
-        if conf is None:
-            self.config = AutoConfig.from_pretrained(model_name)
-        else:
-            self.config = conf
         if q_conf is None:
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_name, token=hf_token
             )
         else:
-            self.model = AutoModelForCausalLM.from_config(
-                self.config, quantization_config=q_conf, token=hf_token
+            self.model = AutoModelForCausalLM.from_pretrained(
+                self.model_name, quantization_config=q_conf, token=hf_token
             )
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, token=hf_token)
         self.generator = pipeline(

@@ -1,5 +1,5 @@
 import torch
-from transformers import StoppingCriteria, PreTrainedTokenizerBase
+from transformers import PreTrainedTokenizerBase, StoppingCriteria
 
 
 class StopOnWords(StoppingCriteria):
@@ -28,4 +28,3 @@ class StopOnWords(StoppingCriteria):
             if torch.equal(input_ids[0][-len(stop_token_id) :], stop_token_id):
                 return True
         return False
-

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from tune.prompt import BasePrompt
 
 
@@ -38,9 +39,19 @@ class WinograndePrompt(BasePrompt):
     def __post_init__(self):
         super().__post_init__()
         # check if examples are valid
-        if not all([key in self.examples for key in ["setence", "option1", "option2", "answer"]]):
+        if not all(
+            [
+                key in self.examples
+                for key in ["setence", "option1", "option2", "answer"]
+            ]
+        ):
             raise ValueError("Invalid examples dictionary.")
-        if len(self.examples["setence"]) != len(self.examples["option1"]) != len(self.examples["option2"]) != len(self.examples["answer"]):
+        if (
+            len(self.examples["setence"])
+            != len(self.examples["option1"])
+            != len(self.examples["option2"])
+            != len(self.examples["answer"])
+        ):
             raise ValueError("Invalid examples dictionary.")
 
     def build_baseline_prompt(self, doc: dict[str, str]) -> str:
@@ -61,9 +72,9 @@ class WinograndePrompt(BasePrompt):
 
         query_text = "Here is the question:\n\n"
         query_text += f"<SENTENCE>\n{doc['sentence']}\n</SENTENCE>\n"
-        query_text += f"<OPTIONS>\n1: {doc['option1']}\n2: {doc['option2']}\n</OPTIONS>\n"
+        query_text += (
+            f"<OPTIONS>\n1: {doc['option1']}\n2: {doc['option2']}\n</OPTIONS>\n"
+        )
         query_text += f"<ANSWER>"
 
         return self.instructions + example_text + query_text
-    
-    

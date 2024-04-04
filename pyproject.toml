@@ -21,6 +21,7 @@ bitsandbytes = "^0.43.0"
 scikit-learn = "^1.4.1.post1"
 matplotlib = "^3.8.4"
 python-dotenv = "^1.0.1"
+accelerate = "^0.28.0"
 
 
 [[tool.poetry.source]]

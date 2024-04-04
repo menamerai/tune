@@ -8,6 +8,7 @@ repos:
       language: system
       types: [file, python]
     - id: isort
+      args: ["--profile", "black"]
       name: isort
       entry: poetry run isort
       language: system
