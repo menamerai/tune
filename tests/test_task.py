@@ -1,6 +1,6 @@
 import pytest
 
-from tune.tasks import *
+from tune.tasks.base import BaseTask
 
 def test_base_task():
     with pytest.raises(NotImplementedError):
